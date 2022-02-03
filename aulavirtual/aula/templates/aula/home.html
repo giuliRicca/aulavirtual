@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Inicio {% endblock %}
+
+
+{% block content %}
+
+{% if subjects %}
+<div class="row">
+    {% for subject in subjects %}
+    <div class="col-sm-6 col-md-4">
+        <a href="{% url 'subject' id=subject.id%}">
+            <div class="card mb-3 text-dark" style="border-color:{{subject.color}}">
+                <div class="card-header text-light"
+                    style="border-color:{{subject.color}}; background-color:{{subject.color}}">
+                    {{subject.teacher}}</div>
+                <div class="card-body text-primary">
+                    <h5 class="card-title text-dark">{{subject.title}}</h5>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

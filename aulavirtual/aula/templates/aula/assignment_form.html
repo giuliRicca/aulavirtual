@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load fontawesome_5 %}
+{% block title %} Crear tarea {% endblock %}
+
+{% block addhead %}
+<style>
+    .form-control {
+        border: none;
+        border-bottom: 1px solid;
+        outline: none;
+        background: rgba(0, 0, 0, 0.041);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1>Tarea</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row align-items-center">
+        <div class="col-12">
+            <div class="input-group mb-2">
+                <span class="mx-2 p-1">{% fa5_icon name='clipboard-list' %}</span>
+                {{form.title}}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="input-group mb-2">
+                <span class="mx-2 p-1">{% fa5_icon name='align-left' %}</span>
+                {{form.description}}
+            </div>
+        </div>
+        <div class="col-12 mb-2">
+            {{form.assigment_file}}
+        </div>
+        <div class="col-12 mb-3">
+            {{form.due_date}}
+        </div>
+        <button type="submit" class="btn text-light" style="background-color:{{subject.color}}">
+            Guardar
+        </button>
+    </div>
+</form>
+{% endblock %}

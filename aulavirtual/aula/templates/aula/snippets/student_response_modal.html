@@ -1,0 +1,37 @@
+{% load fontawesome_5 %}
+{% load aula_extras %}
+
+<div class="modal fade" id="student-{{student.id}}" tabindex="-1" role="dialog" aria-labelledby="student_work"
+    aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileModal">{{student}}</h5>
+            </div>
+            <!-- Content -->
+            <div class="modal-body">
+                <div class="col-12 card border-0">
+                    <p class="text-left">
+                        {{student|text_response:assignment.id}}
+                    </p>
+                    <div class="col-12 card border-gray py-3">
+                        <a class="card-link" href="{{student|response_file_url:assignment.id}}"
+                            onmouseover="this.style.color = '{{subject.color}}'" onmouseout="this.style.color = '#000'">
+                            <span class="pr-3 mr-2 file-icon">
+                                {% fa5_icon name='file' size="fa-2x" %}
+                            </span>
+                            {{student|response_file_name:assignment.id}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer text-light">
+                <a class="btn btn-danger" data-dismiss="modal">cerrar</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

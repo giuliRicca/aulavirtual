@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load fontawesome_5 %}
+{% load aula_extras %}
+{% block title %} {{assignment.title}} {% endblock %}
+
+
+
+{% block content %}
+<div class="container card d-flex justify-content-center border-0">
+    <!-- nav options -->
+    <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#instrucciones" role="tab" aria-selected="true">
+                Instrucciones
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#student-work" role="tab" aria-selected="false">
+                Trabajos
+            </a>
+        </li>
+
+    </ul> <!-- content -->
+    <div class="tab-content mt-2" id="pills-tabContent">
+
+        <!-- 1st card -->
+        <div class="tab-pane fade show active" id="instrucciones" role="tabpanel">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between">
+                        <h1 style="color:{{subject.color}}">{{ assignment.title }}</h1>
+
+                        <div class="btn-group dropleft my-2">
+                            <button type="button" class="btn text-dark" data-toggle="dropdown" aria-expanded="false">
+                                {% fa5_icon name='ellipsis-v' %}
+                            </button>
+                            <div class="dropdown-menu">
+                                <!-- Dropdown menu links -->
+                                <a href="{% url 'edit_assignment' subject_id=subject.id assignment_id=assignment.id %}"
+                                    class="dropdown-item">
+                                    Editar
+                                </a>
+                                <button class="dropdown-item" data-toggle="modal" data-target="#confirm-modal">
+                                    Eliminar
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <span>
+                        <i class="text-muted small">{{assignment.get_due_date}}</i>
+                    </span>
+
+                    <p>{{ assignment.description }}</p>
+
+                    <hr>
+
+                    <div class="col-sm-6 card border-gray py-3">
+                        <a class="card-link" href="{{assignment.file_url}}"
+                            onmouseover="this.style.color = '{{subject.color}}'" onmouseout="this.style.color = '#000'">
+                            <span class="pr-3 mr-2 file-icon">
+                                {% fa5_icon name=assignment.file_extension size="fa-2x" %}
+                            </span>
+                            {{assignment.file_name}}
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 2nd card -->
+        <div class="tab-pane fade" id="student-work" role="tabpanel">
+            <ul class="list-group">
+                {% for student in students %}
+                <div class=" d-flex justify-content-between
+                    list-group-item list-group-item-action list-group-item-{{student|assigned:assignment.id}}">
+
+                    {{student}}
+
+                    {% if student|assigned:assignment.id == 'success' %}
+
+                    <button type="button" class="btn btn-link" data-toggle="modal"
+                        data-target="#student-{{student.id}}">
+                        ver
+                    </button>
+
+                    {% endif %}
+                </div>
+                <!-- MODAL -->
+                {% include 'aula/snippets/student_response_modal.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="alert">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header">
+                <h5 class="modal-title">Estas seguro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer text-light">
+                <a class="btn text-muted" data-dismiss="modal">Cerrar</a>
+                <a href="{% url 'delete_assignment' subject_id=subject.id assignment_id=assignment.id %}" class="btn"
+                    style="color:{{subject.color}}">
+                    Eliminar
+                </a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+{% endblock %}

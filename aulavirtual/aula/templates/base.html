@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load fontawesome_5 %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AulaVirtual |
+        {% block title %}
+        {% endblock %}
+    </title>
+    <!-- ICONOS -->
+    {% fontawesome_5_static %}
+    <!-- BOOTSTRAP -->
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {% bootstrap_messages %}
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getToken('csrftoken');
+    </script>
+    {% block addhead %}
+    {% endblock %}
+</head>
+
+<body>
+    <!-- {{notifications}} -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+            <a class="navbar-brand" href="{% url 'home' %}">AulaVirtual</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto ">
+                    {% if user.is_authenticated %}
+
+                    <li class="nav-item dropleft mx-2">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Mi perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Editar contraseña</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                        </div>
+                    </li>
+                    <!-- Notifications -->
+                    <li class="nav-item dropleft">
+                        <a href="" class="nav-link position-relative" role="button" aria-haspopup="true"
+                            data-toggle="dropdown" aria-expanded="false" id="notificationsBell">
+                            <div class="notification-number" id="notificationNumber">
+
+                            </div>
+                            <span class="fa fa-bell fa-2x"></span>
+
+                        </a>
+                        <div class="dropdown-menu" id="notificationDropdown" style="width: 300px;"
+                            aria-labelledby="notificationDropdown">
+
+                        </div>
+
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </nav>
+    </header>
+    <hr />
+    <div class="container main-content">
+        <div class="row">
+            <div class="col mt-2">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var notifications = JSON.parse('{{notifications | safe}}');
+    </script>
+    <script src="{% static 'js/notifications.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load fontawesome_5 %}
+{% block title %} {{ subject.title }} {% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid sb-banner text-light" style="background-color:{{subject.color}}">
+    <h1>{{ subject.title }}</h1>
+</div>
+
+{% if user.is_teacher %}
+<div class="btn-group dropright my-2">
+    <button type="button" class="btn text-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false" style="background-color:{{subject.color}};">
+        Crear
+    </button>
+    <div class="dropdown-menu">
+        <!-- Dropdown menu links -->
+        <a href="{% url 'create_assignment'  subject_id=subject.id%}" class="dropdown-item">
+            <span>{% fa5_icon name='clipboard-list' %}</span> Tarea
+        </a>
+        <a href="#" class="dropdown-item">
+            <span>{% fa5_icon name='book' %}</span> Material
+        </a>
+    </div>
+</div>
+{% endif %}
+{% if assignments %}
+<div class=" row mt-3">
+    {% for assignment in assignments %}
+    <div class="col-md-9 col-sm-12">
+        <a href="{% url 'assignment' subject_id=subject.id assignment_id=assignment.id %}">
+            <div class="card border-dark mb-3">
+                <div class="card-body text-dark">
+                    <h5 class="card-title">{{assignment.title}}</h5>
+                    <p>{{assignment.get_due_date}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+    <div class="col-md-3 d-none d-md-block">
+        <div class="card border-dark ">
+            <div class="card-body">
+                <h6>Para entregar...</h6>
+                {% for assignment in assignments %}
+                {% if assignment.is_overdue == False %}
+                <a href="{% url 'assignment' subject_id=subject.id assignment_id=assignment.id %}">
+                    {{assignment.title}}
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<p class="text-muted p-3">
+    No hay trabajos en esta clase...
+</p>
+{% endif %}
+
+
+{% endblock %}

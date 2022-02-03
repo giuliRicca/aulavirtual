@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load fontawesome_5 %}
+
+{% block title %} {{assignment.title}} {% endblock %}
+
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <h1 style="color:{{subject.color}}">{{ assignment.title }}</h1>
+
+        <span>
+            <i class="text-muted small">{{assignment.get_due_date}}</i>
+        </span>
+
+        <p>{{ assignment.description }}</p>
+
+        <hr>
+
+        <div class="col-sm-6 card border-gray py-3">
+            <a class="card-link" href="{{assignment.file_url}}" onmouseover="this.style.color = '{{subject.color}}'"
+                onmouseout="this.style.color = '#000'">
+                <span class="pr-3 mr-2 file-icon">
+                    {% fa5_icon name=assignment.file_extension size="fa-2x" %}
+                </span>
+                {{assignment.file_name}}
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card border-gray p-3">
+            <div class="top d-flex justify-content-between">
+                <h4>Tu trabajo</h4>
+                <p class=" {{ response_status.1 }} ">{{ response_status.0 }}</p>
+            </div>
+            <div class="col-12">
+                {% if response %}
+                <a class="btn border-gray card-btn-outline w-100" href={{response.file_url}}>
+                    {{ response.file_name }}
+                </a>
+                <a href="{% url 'delete-response' response_id=response.id %}?next=home"
+                    style="background-color: {{subject.color}};" class="btn w-100 card-btn">
+                    Eliminar respuesta
+                </a>
+                {% else %}
+                <button data-toggle="modal" data-target="#fileModal" class="btn border-gray card-btn-outline w-100"
+                    href="#">
+                    + Agregar
+                </button>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not response %}
+<!-- Modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileModal">Subir archivos</h5>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="text_response">Respuesta:</label>
+                        {{ form.text_response }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.response_file }}
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-orange">Enviar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

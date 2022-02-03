@@ -1,0 +1,85 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-content {
+    max-width: 800px;
+}
+
+a span {
+    color: #000;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.card-link {
+    color: #000;
+    display: flex;
+    align-items: center;
+}
+
+.card-btn-outline {
+    font-weight: 600;
+}
+
+.file-icon {
+    border-right: solid 1px rgb(201, 201, 201);
+}
+
+.card-btn-outline:hover {
+    background-color: rgba(184, 158, 158, 0.2);
+}
+
+.card-btn {
+    color: #fff;
+    font-weight: 600;
+    margin: 1rem 0;
+}
+
+.card-btn:hover {
+    opacity: .8;
+    color: #fff;
+}
+
+.border-gray {
+    border: 1px solid;
+    border-color: rgb(201, 201, 201);
+}
+
+.sb-banner {
+    height: 140px;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.notification-number {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F00;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0px;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 700;
+}
+.notification{
+    width: 100%;
+    padding: .5rem;
+}
+.notification .sender{
+    font-size: 12px;
+}
+.notification .body{
+    font-size: 12px;
+}
