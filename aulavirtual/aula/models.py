@@ -2,12 +2,10 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 import os
-from fontawesome_5.fields import IconField
 from colorfield.fields import ColorField
 from django.utils import timezone, dateformat
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from datetime import datetime
 
 # Create your models here.
 
